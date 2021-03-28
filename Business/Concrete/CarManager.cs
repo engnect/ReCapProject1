@@ -1,8 +1,11 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace Business.Concrete
@@ -24,10 +27,6 @@ namespace Business.Concrete
             {
                 _carDal.Add(car);
             }
-            
-            
-            
-            
 
         }
 
@@ -36,20 +35,24 @@ namespace Business.Concrete
             _carDal.Delete(car);
         }
 
+        
+
         public List<Car> GetAll()
         {
             return _carDal.GetAll();
         }
 
-        public List<Car> GetCarsByBrandId(int brandId)
+        public List<CarDetailDto> GetAllCarDetails()
         {
-            throw new NotImplementedException();
+            return _carDal.GetAllCarDetails();
         }
 
-        public List<Car> GetCarsByColorId(int colorId)
+        public List<Car> GetById(int Id)
         {
-            throw new NotImplementedException();
+            return _carDal.GetById(c=>c.Id == Id);
         }
+
+        
 
         public void Update(Car car)
         {
