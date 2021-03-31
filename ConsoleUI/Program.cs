@@ -11,22 +11,23 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             CarManager carManager = new CarManager(new EfCarDal());
-            /*carManager.Add(new Car
-            {
-                Id = 57,
-                CarName = "BMW",
-                BrandId = 1,
-                ColorId = 3,
-                DailyPrice =50,
-                Description = "Leş ama iyi",
-                ModelYear = 1999
-            });*/
+            UserManager userManager = new UserManager(new EfUserDal());
 
-            var result = carManager.GetAllCarDetails();
-            foreach (var car in result)
+            CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+
+            RentalManager rentalManager = new RentalManager(new EfRentalDal());
+
+            var result = rentalManager.Add(new Rental { CarId = 3, CustomerId = 1,  RentDate = new DateTime(2021,04,01), ReturnDate = null  });
+            if (result.Success)
             {
-                Console.WriteLine(car.BrandName);
+                Console.WriteLine(result.Message);
             }
+            else
+            {
+                Console.WriteLine(result.Message);
+            }
+            
+            
 
 
 

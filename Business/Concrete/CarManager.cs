@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Business.Constants;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -17,46 +19,51 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
-        public void Add(Car car)
+        public IResult Add(Car car)
         {
             if (car.CarName.Length<2 || car.DailyPrice<=0)
             {
-                Console.WriteLine("İsim 2 karakterden küçük olamaz.");
+                return new ErrorResult(Messages.CarNotAdded);
             }
-            else
-            {
-                _carDal.Add(car);
-            }
+            
+            _carDal.Add(car);
+                return new SuccessResult(Messages.CarAdded);
+            
 
         }
 
-        public void Delete(Car car)
+        public IResult Delete(Car car)
         {
             _carDal.Delete(car);
+            return new SuccessResult("Araba silindi");
+            //Proje yapılırken parametre de silinecek
+
         }
 
         
 
-        public List<Car> GetAll()
+        public IDataResult<List<Car>> GetAll()
         {
-            return _carDal.GetAll();
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
         }
 
-        public List<CarDetailDto> GetAllCarDetails()
+        public IDataResult<List<CarDetailDto>> GetAllCarDetails()
         {
-            return _carDal.GetAllCarDetails();
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetAllCarDetails(), "Bütün araba detayları getirildi.");
+
         }
 
-        public List<Car> GetById(int Id)
+        public IDataResult<List<Car>> GetById(int Id)
         {
-            return _carDal.GetById(c=>c.Id == Id);
+            return new SuccessDataResult<List<Car>>(_carDal.GetById(c=>c.Id == Id));
         }
 
         
 
-        public void Update(Car car)
+        public IResult Update(Car car)
         {
             _carDal.Update(car);
+            return new SuccessResult("Araba güncellendi.");
         }
     }
 }
