@@ -47,6 +47,11 @@ namespace DataAccess.Concrete.InMemory
             throw new NotImplementedException();
         }
 
+        public Car GetById(Expression<Func<Car, bool>> filter)
+        {
+            throw new NotImplementedException();
+        }
+
         public void Update(Car car)
         {
             Car carToUpdate = cars.SingleOrDefault(c => c.Id == car.Id);
@@ -54,7 +59,7 @@ namespace DataAccess.Concrete.InMemory
 
         }
 
-        List<Car> IEntityRepository<Car>.GetById(Expression<Func<Car, bool>> filter)
+        Car IEntityRepository<Car>.GetById(Expression<Func<Car, bool>> filter)
         {
             throw new NotImplementedException();
         }

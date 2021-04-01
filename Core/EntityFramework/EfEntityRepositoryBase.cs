@@ -42,11 +42,11 @@ namespace Core.EntityFramework
             }
         }
 
-        public List<TEntity> GetById(Expression<Func<TEntity, bool>> filter)
+        public TEntity GetById(Expression<Func<TEntity, bool>> filter)
         {
             using (TContext context = new TContext())
             {
-                return context.Set<TEntity>().Where(filter).ToList();
+                return context.Set<TEntity>().SingleOrDefault(filter);
             }
         }
 
