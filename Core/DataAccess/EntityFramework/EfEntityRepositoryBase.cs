@@ -1,20 +1,22 @@
-﻿using DataAccess.Concrete.EntityFramework;
-using Entities.Abstract;
-using Microsoft.EntityFrameworkCore;
+﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 
-namespace Core.EntityFramework
+using System.Linq;
+using Core.Entities;
+
+namespace Core.DataAccess.EntityFramework
 {
-    public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
-        where TEntity : class, IEntity, new()
-        where TContext : DbContext, new()
+    public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity> 
+        where TEntity : class, IEntity, new() where TContext : DbContext, new()
+
     {
         public void Add(TEntity entity)
         {
+            //IDispossable pattern implementation of c#
             using (TContext context = new TContext())
             {
                 var addedEntity = context.Entry(entity);
@@ -33,20 +35,21 @@ namespace Core.EntityFramework
             }
         }
 
-        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
-        {
-            using (TContext context = new TContext())
-            {
-                return filter == null ? context.Set<TEntity>().ToList() :
-                    context.Set<TEntity>().Where(filter).ToList();
-            }
-        }
-
         public TEntity GetById(Expression<Func<TEntity, bool>> filter)
         {
             using (TContext context = new TContext())
             {
                 return context.Set<TEntity>().SingleOrDefault(filter);
+            }
+        }
+
+        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
+        {
+            using (TContext context = new TContext())
+            {
+                return filter == null
+                    ? context.Set<TEntity>().ToList()
+                    : context.Set<TEntity>().Where(filter).ToList();
             }
         }
 
@@ -59,7 +62,5 @@ namespace Core.EntityFramework
                 context.SaveChanges();
             }
         }
-
-        
     }
 }

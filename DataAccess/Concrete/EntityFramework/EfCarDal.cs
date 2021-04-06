@@ -1,4 +1,4 @@
-﻿using Core.EntityFramework;
+﻿using Core.DataAccess.EntityFramework;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -22,7 +22,7 @@ namespace DataAccess.Concrete
                              on c.BrandId equals b.BrandId
                              
                                                              
-                             select new CarDetailDto { CarName = c.CarName, ColorName = co.ColorName, BrandName = b.BrandName};
+                             select new CarDetailDto { ColorName = co.ColorName, BrandName = b.BrandName};
 
                 return result.ToList();
             }

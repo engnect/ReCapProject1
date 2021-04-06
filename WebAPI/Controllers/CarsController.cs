@@ -1,5 +1,5 @@
-﻿using Business.Abstract;
-using DataAccess.Abstract;
+﻿
+using Business.Abstract;
 using Entities.Concrete;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,11 +14,15 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CarsController : ControllerBase
     {
+       
         ICarService _carService;
+
+        
         public CarsController(ICarService carService)
         {
             _carService = carService;
         }
+
         [HttpGet("getall")]
         public IActionResult GetAll()
         {
@@ -26,24 +30,18 @@ namespace WebAPI.Controllers
             if (result.Success)
             {
                 return Ok(result);
+
             }
             return BadRequest(result);
         }
 
-        [HttpGet("getbyid")]
-        public IActionResult GetById(int Id)
-        {
-            var result = _carService.GetById(Id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
         [HttpPost("add")]
+
         public IActionResult Add(Car car)
         {
+
             var result = _carService.Add(car);
+
             if (result.Success)
             {
                 return Ok(result);

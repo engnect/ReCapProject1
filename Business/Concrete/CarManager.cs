@@ -1,18 +1,17 @@
 ﻿using Business.Abstract;
-using Business.Constants;
-using Business.ValidationRules.FluentValidation;
-using Core.Aspects.Autofac;
-using Core.CrossCuttingConcerns.Validation;
-using Core.Utilities.Results;
-using DataAccess.Abstract;
 using Entities.Concrete;
-using Entities.DTOs;
-using FluentValidation;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
 using System.Text;
+using DataAccess.Abstract;
+using System.Linq;
+using Entities.DTOs;
+using Core.Utilities.Results;
+using Business.Constants;
+using FluentValidation;
+using Business.ValidationRules.FluentValidation;
+using Core.CrossCuttingConcerns.Validation;
+using Core.Aspects.Autofac.Validation;
 
 namespace Business.Concrete
 {
@@ -22,51 +21,48 @@ namespace Business.Concrete
         public CarManager(ICarDal carDal)
         {
             _carDal = carDal;
+
         }
 
         [ValidationAspect(typeof(CarValidator))]
         public IResult Add(Car car)
         {
-            //business codes
-            
+
             _carDal.Add(car);
 
-            return new SuccessResult(Messages.CarAdded);
-            
+            return new SuccessResult(Messages.Added);
         }
 
         public IResult Delete(Car car)
         {
             _carDal.Delete(car);
-            return new SuccessResult("Araba silindi");
-            //Proje yapılırken parametre de silinecek
-
+            return new SuccessResult(Messages.Deleted);
         }
 
-        
+
 
         public IDataResult<List<Car>> GetAll()
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll());
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.Listed);
         }
 
-        public IDataResult<List<CarDetailDto>> GetAllCarDetails()
+        public IDataResult<List<CarDetailDto>> GetCarDetails()
         {
-            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetAllCarDetails(), "Bütün araba detayları getirildi.");
-
+            return new SuccessDataResult<List<CarDetailDto>>(_carDal.GetAllCarDetails(), Messages.Listed);
         }
 
-        public IDataResult <Car> GetById(int Id)
+        public IDataResult<Car> GetCarId(int id)
         {
-            return new SuccessDataResult<Car>(_carDal.GetById(c=>c.Id == Id));
+            return new SuccessDataResult<Car>(_carDal.GetById(c => c.Id == id));
         }
 
-        
+
 
         public IResult Update(Car car)
         {
             _carDal.Update(car);
-            return new SuccessResult("Araba güncellendi.");
+
+            return new SuccessResult(Messages.Updated);
         }
     }
 }
